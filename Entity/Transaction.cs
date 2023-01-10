@@ -24,7 +24,7 @@ public class Transaction
         Type = newTransaction.Type!.Value;
         Category = newTransaction.Category!.Value;
         Date = newTransaction.Date!.Value;;
-        Period = $"{newTransaction.Date!.Value.Month:D2}{newTransaction.Date!.Value.Year:D4}";
+        Period = GetPeriod(newTransaction.Date!.Value);
         CreationDate = DateTime.Now;
     }
 
@@ -34,7 +34,9 @@ public class Transaction
         Type = updatedTransaction.Type!.Value;
         Category = updatedTransaction.Category!.Value;
         Date = updatedTransaction.Date!.Value;
-        Period = $"{updatedTransaction.Date!.Value.Month:D2}{updatedTransaction.Date!.Value.Year:D4}";
+        Period = GetPeriod(updatedTransaction.Date!.Value);
         UpdateDate = DateTime.Now;
     }
+
+    private string GetPeriod(DateTime date) => $"{date.Month:D2}{date.Year:D4}";
 }

@@ -10,8 +10,7 @@ public static class TransactionsDefinitions {
                                        .Set(_ => _.Amount, transaction.Amount)
                                        .Set(_ => _.Type, transaction.Type)
                                        .Set(_ => _.Category, transaction.Category)
-                                       .Set(_ => _.Date, transaction.Date)
-                                       .Set(_ => _.Period, transaction.Period);
+                                       .Set(_ => _.Date, transaction.Date);
     
     public static FilterDefinition<Transaction> GetByIdFilterDefinition(string id)
         => Builders<Transaction>.Filter.Eq("_id", ObjectId.Parse(id));

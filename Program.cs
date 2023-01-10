@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Microsoft.OpenApi.Models;
 using MiniValidation;
 using MongoDB.Driver;
@@ -21,6 +22,11 @@ builder.Services.AddSwaggerGen(c =>
         Contact = new OpenApiContact { Name = "Matheus de Assis", Email = "assis4002@gmail.com" },
     });
 });
+builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
+{
+options.SerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 
 var app = builder.Build();
 #endregion
@@ -34,15 +40,13 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-MapActions(app);
+MapTransactionsActions(app);
 app.Run();
-
 #endregion
 
-#region Actions
-void MapActions(WebApplication app)
+#region Transaction Actions
+void MapTransactionsActions(WebApplication app)
 {
-    #region  Transactions
     app.MapPost("/transaction", async 
         (TransactionsContextDb database,
          TransactionCreateRequestDTO transactionDTO) => 
@@ -52,7 +56,7 @@ void MapActions(WebApplication app)
             
             var transaction = new Transaction(transactionDTO);
             await database.Transactions.InsertOneAsync(transaction);
-            return Results.Ok(transaction);
+            return Results.Ok((TransactionResponseDTO)transaction);
         })
         .ProducesValidationProblem()
         .Produces(StatusCodes.Status200OK)
@@ -68,12 +72,12 @@ void MapActions(WebApplication app)
                 return Results.BadRequest("The \"Period\" parameter is required.");
 
             var filter = GetByPeriodFilterDefinition(period);
-            var result = await (await database.Transactions.FindAsync(filter)).ToListAsync();
+            ICollection<Transaction> result = await (await database.Transactions.FindAsync(filter)).ToListAsync();
 
             if(result.Count == 0)
                 return Results.NoContent();
 
-            return Results.Ok(result);
+            return Results.Ok((ICollection<TransactionResponseDTO>)result);
         })
         .ProducesValidationProblem()
         .Produces(StatusCodes.Status200OK)
@@ -98,7 +102,7 @@ void MapActions(WebApplication app)
             if(result.ModifiedCount == 0)
                 Results.BadRequest("It was not possible to update the transaction with the given id.");    
 
-            return Results.Ok(result);
+            return Results.Ok((TransactionResponseDTO)transaction);
         })
         .ProducesValidationProblem()
         .Produces(StatusCodes.Status200OK)
