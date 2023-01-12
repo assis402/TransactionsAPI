@@ -30,6 +30,7 @@ public class Transaction
 
     public Transaction(TransactionUpdateRequestDTO updatedTransaction)
     {
+        Id = new ObjectId(updatedTransaction.Id);
         Title = updatedTransaction.Title;
         Type = updatedTransaction.Type!.Value;
         Category = updatedTransaction.Category!.Value;

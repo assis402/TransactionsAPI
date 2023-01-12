@@ -6,6 +6,7 @@ using TransactionsAPI.Data;
 using TransactionsAPI.DTOs;
 using TransactionsAPI.Entity;
 using static TransactionsAPI.Data.TransactionsDefinitions;
+using static TransactionsAPI.Converters.TransactionConverters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -72,12 +73,12 @@ void MapTransactionsActions(WebApplication app)
                 return Results.BadRequest("The \"Period\" parameter is required.");
 
             var filter = GetByPeriodFilterDefinition(period);
-            ICollection<Transaction> result = await (await database.Transactions.FindAsync(filter)).ToListAsync();
+            var result = await (await database.Transactions.FindAsync(filter)).ToListAsync();
 
             if(result.Count == 0)
                 return Results.NoContent();
 
-            return Results.Ok((ICollection<TransactionResponseDTO>)result);
+            return Results.Ok(result.ConvertToResult());
         })
         .ProducesValidationProblem()
         .Produces(StatusCodes.Status200OK)

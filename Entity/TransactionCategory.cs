@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace TransactionsAPI.Entity;
 
 public enum TransactionCategory 
