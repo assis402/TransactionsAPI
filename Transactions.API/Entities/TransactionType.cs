@@ -1,4 +1,4 @@
-namespace TransactionsAPI.Entity;
+namespace Transactions.API.Entities;
 
 public enum TransactionType 
 {

@@ -1,9 +1,9 @@
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
-using TransactionsAPI.Entity;
+using Transactions.API.Entities;
 
-namespace TransactionsAPI.Data;
+namespace Transactions.API.Data;
 
 public class TransactionsContextDb
 {

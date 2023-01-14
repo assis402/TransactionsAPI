@@ -1,8 +1,8 @@
 using MongoDB.Bson;
 using MongoDB.Driver;
-using TransactionsAPI.Entity;
+using Transactions.API.Entities;
 
-namespace TransactionsAPI.Data;
+namespace Transactions.API.Data;
 
 public static class TransactionsDefinitions {
     public static UpdateDefinition<Transaction> UpdateDefinition(Transaction transaction)

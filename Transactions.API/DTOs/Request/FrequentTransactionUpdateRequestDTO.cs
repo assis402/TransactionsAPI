@@ -1,10 +1,13 @@
 using System.ComponentModel.DataAnnotations;
-using TransactionsAPI.Entity;
+using Transactions.API.Entities;
 
-namespace TransactionsAPI.DTOs;
+namespace Transactions.API.DTOs.Request;
 
-public record struct TransactionCreateRequestDTO
+public record struct FrequentTransactionUpdateRequestDTO
 {
+    [Required(AllowEmptyStrings=false), Display(Name = nameof(Id))]
+    public string? Id { get; init; }
+
     [Required(AllowEmptyStrings=false), Display(Name = nameof(Title))]
     public string? Title { get; init; }
 
@@ -16,7 +19,4 @@ public record struct TransactionCreateRequestDTO
 
     [Required, Range(0, 6, ErrorMessage = "Enter a valid Category"), Display(Name = nameof(Category))]
     public TransactionCategory? Category { get; init; }
-
-    [Required, Display(Name = nameof(Date))]
-    public DateTime? Date { get; init; }
 }

@@ -1,8 +1,8 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using TransactionsAPI.DTOs;
+using Transactions.API.DTOs.Request;
 
-namespace TransactionsAPI.Entity;
+namespace Transactions.API.Entities;
 
 public class Transaction
 {
@@ -23,7 +23,7 @@ public class Transaction
         Title = newTransaction.Title;
         Type = newTransaction.Type!.Value;
         Category = newTransaction.Category!.Value;
-        Date = newTransaction.Date!.Value;;
+        Date = newTransaction.Date!.Value;
         Period = GetPeriod(newTransaction.Date!.Value);
         CreationDate = DateTime.Now;
     }

@@ -2,13 +2,18 @@ using System.Text.Json.Serialization;
 using Microsoft.OpenApi.Models;
 using MiniValidation;
 using MongoDB.Driver;
-using TransactionsAPI.Data;
-using TransactionsAPI.DTOs;
-using TransactionsAPI.Entity;
-using static TransactionsAPI.Data.TransactionsDefinitions;
-using static TransactionsAPI.Converters.TransactionConverters;
+using Transactions.API.Data;
+using Transactions.API.DTOs.Request;
+using Transactions.API.DTOs.Response;
+using Transactions.API.Entities;
+using static Microsoft.AspNetCore.Http.Results;
+using static Transactions.API.Data.TransactionsDefinitions;
+using static Transactions.API.Converters.TransactionConverters;
+using static Transactions.API.Helpers.ResultHelper;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration.AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json");
 
 #region Configure Services
 builder.Services.AddEndpointsApiExplorer();
@@ -41,25 +46,32 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-MapTransactionsActions(app);
+MapTransactionActions(app);
 app.Run();
 #endregion
 
 #region Transaction Actions
-void MapTransactionsActions(WebApplication app)
+void MapTransactionActions(WebApplication app)
 {
     app.MapPost("/transaction", async 
         (TransactionsContextDb database,
          TransactionCreateRequestDTO transactionDTO) => 
-        {            
-            if (!MiniValidator.TryValidate(transactionDTO, out var errors))
-                return Results.ValidationProblem(errors);
-            
-            var transaction = new Transaction(transactionDTO);
-            await database.Transactions.InsertOneAsync(transaction);
-            return Results.Ok((TransactionResponseDTO)transaction);
+        {
+            try
+            {
+                if (!MiniValidator.TryValidate(transactionDTO, out var errors))
+                    return BadRequest(ErrorResult(errors));
+                
+                var transaction = new Transaction(transactionDTO);
+                await database.Transactions.InsertOneAsync(transaction);
+
+                return Ok(SuccessResult<TransactionResponseDTO>(transaction));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(CriticalErrorResult(ex.Message));
+            }
         })
-        .ProducesValidationProblem()
         .Produces(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status400BadRequest)
         .WithName("CreateTransaction")
@@ -134,3 +146,9 @@ void MapTransactionsActions(WebApplication app)
         .WithTags("Transaction");
 }
 #endregion
+
+#region  FrequentTransaction Actions
+
+#endregion
+
+public partial class Program {}

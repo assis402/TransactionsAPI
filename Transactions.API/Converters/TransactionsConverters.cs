@@ -1,7 +1,7 @@
-using TransactionsAPI.DTOs;
-using TransactionsAPI.Entity;
+using Transactions.API.DTOs.Response;
+using Transactions.API.Entities;
 
-namespace TransactionsAPI.Converters;
+namespace Transactions.API.Converters;
 
 public static class TransactionConverters 
 {

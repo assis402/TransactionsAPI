@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using TransactionsAPI.Entity;
+using Transactions.API.Entities;
 
-namespace TransactionsAPI.DTOs;
+namespace Transactions.API.DTOs.Response;
 
 public record struct TransactionResponseDTO
 {

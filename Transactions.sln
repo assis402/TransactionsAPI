@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transactions.API", "Transactions.API\Transactions.API.csproj", "{F151F322-42B5-414C-9D77-15B93D2B7BD0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transactions.IntegrationTests", "Transactions.IntegrationTests\Transactions.IntegrationTests.csproj", "{EDD9DD6D-5247-4B1F-ABC9-D0C9F9B8F08F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F151F322-42B5-414C-9D77-15B93D2B7BD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F151F322-42B5-414C-9D77-15B93D2B7BD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F151F322-42B5-414C-9D77-15B93D2B7BD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F151F322-42B5-414C-9D77-15B93D2B7BD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDD9DD6D-5247-4B1F-ABC9-D0C9F9B8F08F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDD9DD6D-5247-4B1F-ABC9-D0C9F9B8F08F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDD9DD6D-5247-4B1F-ABC9-D0C9F9B8F08F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDD9DD6D-5247-4B1F-ABC9-D0C9F9B8F08F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
