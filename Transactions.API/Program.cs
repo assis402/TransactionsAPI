@@ -51,7 +51,7 @@ app.Run();
 #endregion
 
 #region Transaction Actions
-void MapTransactionActions(WebApplication app)
+static void MapTransactionActions(WebApplication app)
 {
     app.MapPost("/transaction", async 
         (TransactionsContextDb database,

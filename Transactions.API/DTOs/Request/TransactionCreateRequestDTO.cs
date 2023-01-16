@@ -3,7 +3,7 @@ using Transactions.API.Entities;
 
 namespace Transactions.API.DTOs.Request;
 
-public record struct TransactionCreateRequestDTO
+public readonly record struct TransactionCreateRequestDTO
 {
     [Required(AllowEmptyStrings=false), Display(Name = nameof(Title))]
     public string? Title { get; init; }
