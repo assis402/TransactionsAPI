@@ -10,6 +10,8 @@ using static Microsoft.AspNetCore.Http.Results;
 using static Transactions.API.Data.TransactionsDefinitions;
 using static Transactions.API.Converters.TransactionConverters;
 using static Transactions.API.Helpers.ResultHelper;
+using System.Net;
+using Transactions.API.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,11 +67,11 @@ static void MapTransactionActions(WebApplication app)
                 var transaction = new Transaction(transactionDTO);
                 await database.Transactions.InsertOneAsync(transaction);
 
-                return Ok(SuccessResult<TransactionResponseDTO>(transaction));
+                return SuccessResult<TransactionResponseDTO>(transaction);
             }
             catch (Exception ex)
             {
-                return BadRequest(CriticalErrorResult(ex.Message));
+                return CriticalErrorResult(ex.Message);
             }
         })
         .Produces(StatusCodes.Status200OK)
@@ -88,9 +90,9 @@ static void MapTransactionActions(WebApplication app)
             var result = await (await database.Transactions.FindAsync(filter)).ToListAsync();
 
             if(result.Count == 0)
-                return Results.NoContent();
+                return NotFoundResult("No transactions found.");
 
-            return Results.Ok(result.ConvertToResult());
+            return SuccessResult(result.ConvertToDTO());
         })
         .ProducesValidationProblem()
         .Produces(StatusCodes.Status200OK)
@@ -113,9 +115,9 @@ static void MapTransactionActions(WebApplication app)
             var result = await database.Transactions.UpdateOneAsync(filter, updateDefinition);
 
             if(result.ModifiedCount == 0)
-                Results.BadRequest("It was not possible to update the transaction with the given id.");    
+                ErrorResult("It was not possible to update the transaction with the given id.");    
 
-            return Results.Ok((TransactionResponseDTO)transaction);
+            return SuccessResult<TransactionResponseDTO>(transaction);
         })
         .ProducesValidationProblem()
         .Produces(StatusCodes.Status200OK)
@@ -134,13 +136,12 @@ static void MapTransactionActions(WebApplication app)
             var result = await database.Transactions.DeleteOneAsync(filter); 
 
             if(result.DeletedCount == 0)
-                Results.BadRequest("It was not possible to delete the transaction with the given id.");
+                ErrorResult("It was not possible to delete the transaction with the given id.");
 
-            return Results.Ok(); 
+            return SuccessResult($"Transaction with id {id} successfully deleted"); 
         })
         .ProducesValidationProblem()
         .Produces(StatusCodes.Status200OK)
-        .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status400BadRequest)
         .WithName("DeleteTransaction")
         .WithTags("Transaction");

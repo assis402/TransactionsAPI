@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Mvc.Testing;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +11,20 @@ namespace Transactions.IntegrationTests.Helpers
 {
     internal static class Utils
     {
-        internal static async Task<TResponse> Post<TResponse, TRequest>(this HttpClient httpClient, TRequest request)
+        internal static async Task<TResponse> Post<TRequest, TResponse>(this HttpClient httpClient, TRequest request)
         {
             var result = await httpClient.PostAsJsonAsync(httpClient.BaseAddress, request);
             return JsonConvert.DeserializeObject<TResponse>(await result.Content.ReadAsStringAsync());
+        }
+
+        internal static HttpClient CreateClient(this TransactionsApplication application, string url)
+        {
+            var httpClientOptions = new WebApplicationFactoryClientOptions 
+            {
+                BaseAddress = new Uri("/transactions")
+            };
+
+            return application.CreateClient(httpClientOptions);
         }
     }
 }
