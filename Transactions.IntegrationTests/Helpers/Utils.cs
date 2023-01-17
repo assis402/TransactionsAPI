@@ -21,7 +21,7 @@ namespace Transactions.IntegrationTests.Helpers
         {
             var httpClientOptions = new WebApplicationFactoryClientOptions 
             {
-                BaseAddress = new Uri("/transactions")
+                BaseAddress = new Uri(url)
             };
 
             return application.CreateClient(httpClientOptions);

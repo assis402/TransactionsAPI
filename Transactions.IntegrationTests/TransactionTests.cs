@@ -5,6 +5,7 @@ using Transactions.API.DTOs.Response;
 using Transactions.API.Helpers;
 using Transactions.IntegrationTests.Helpers;
 using static System.Net.HttpStatusCode;
+using static Transactions.IntegrationTests.Helpers.TransactionHelper;
 
 namespace Transactions.IntegrationTests;
 
@@ -12,7 +13,7 @@ public class TransactionTests : IClassFixture<TransactionsApplication>
 {
     private readonly TransactionsApplication _application;
     private readonly HttpClient _httpClient;
-    private const string _baseUrl = "transaction";
+    private const string _baseUrl = "https://localhost:5098/transaction";
 
     public TransactionTests(TransactionsApplication application)
     {
@@ -24,7 +25,7 @@ public class TransactionTests : IClassFixture<TransactionsApplication>
     public async Task Test1()
     {
         //Arrange
-        var request = new TransactionCreateRequestDTO();
+        var request = GenerateRequest();
 
         //Act
         var result = await _httpClient.Post<TransactionCreateRequestDTO,
