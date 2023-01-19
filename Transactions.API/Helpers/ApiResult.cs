@@ -5,15 +5,15 @@ namespace Transactions.API.Helpers;
 
 public record struct ApiResult<T>
 {
-    public bool Success { get; private set; }
-    public HttpStatusCode StatusCode { get; private set; }
-    public string? Title { get; private set; }
-    public T? Data { get; private set; }
+    public bool Success { get; init; }
+    public int StatusCode { get; init; }
+    public string? Title { get; init; }
+    public T? Data { get; init; }
 
     public ApiResult(bool success, string? title, T? data, HttpStatusCode statusCode)
     {
         Success = success;
-        StatusCode = statusCode;
+        StatusCode = (int)statusCode;
         Title = title;
         Data = data;
     }

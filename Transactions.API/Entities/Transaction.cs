@@ -23,6 +23,7 @@ public class Transaction
         Title = newTransaction.Title;
         Type = newTransaction.Type!.Value;
         Category = newTransaction.Category!.Value;
+        Amount = newTransaction.Amount!.Value;
         Date = newTransaction.Date!.Value;
         Period = GetPeriod(newTransaction.Date!.Value);
         CreationDate = DateTime.Now;

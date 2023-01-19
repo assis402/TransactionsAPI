@@ -62,7 +62,7 @@ static void MapTransactionActions(WebApplication app)
             try
             {
                 if (!MiniValidator.TryValidate(transactionDTO, out var errors))
-                    return BadRequest(ErrorResult(errors));
+                    return ErrorResult(errors);
                 
                 var transaction = new Transaction(transactionDTO);
                 await database.Transactions.InsertOneAsync(transaction);
@@ -84,7 +84,7 @@ static void MapTransactionActions(WebApplication app)
          string? period) => 
         {            
             if (period is null)
-                return Results.BadRequest("The \"Period\" parameter is required.");
+                return ErrorResult("The \"Period\" parameter is required.");
 
             var filter = GetByPeriodFilterDefinition(period);
             var result = await (await database.Transactions.FindAsync(filter)).ToListAsync();
@@ -106,7 +106,7 @@ static void MapTransactionActions(WebApplication app)
          TransactionUpdateRequestDTO transactionDTO) => 
         {            
             if (!MiniValidator.TryValidate(transactionDTO, out var errors))
-                return Results.ValidationProblem(errors);
+                return ErrorResult(errors);
 
             var transaction = new Transaction(transactionDTO);
 
@@ -130,7 +130,7 @@ static void MapTransactionActions(WebApplication app)
          string? id) => 
         {
             if (id is null)
-                return Results.BadRequest("The \"Id\" parameter is required.");
+                return ErrorResult("The \"Id\" parameter is required.");
 
             var filter = GetByIdFilterDefinition(id!);
             var result = await database.Transactions.DeleteOneAsync(filter); 
