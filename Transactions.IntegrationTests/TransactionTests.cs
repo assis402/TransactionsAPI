@@ -50,7 +50,7 @@ public class TransactionTests : IClassFixture<TransactionsApplication>
     public async Task CreationValidationError()
     {
         //Arrange
-        var request = new TransactionCreateRequestDTO();
+        var request = GenerateCreateRequest();
 
         //Act
         var result = await _httpClient.Post<TransactionCreateRequestDTO,

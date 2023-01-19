@@ -12,6 +12,7 @@ using static Transactions.API.Converters.TransactionConverters;
 using static Transactions.API.Helpers.ResultHelper;
 using System.Net;
 using Transactions.API.Helpers;
+using Transactions.API.Converters;
 
 var builder = WebApplication.CreateBuilder(args);
 
