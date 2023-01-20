@@ -14,7 +14,7 @@ public class TransactionTests : IClassFixture<TransactionsApplication>
     private readonly TransactionsApplication _application;
     private readonly HttpClient _httpClient;
     private const string _baseUrl = "https://localhost:5098/transaction";
-    private string _transactionId;
+    private string? _transactionId;
 
     public TransactionTests(TransactionsApplication application)
     {
@@ -50,7 +50,7 @@ public class TransactionTests : IClassFixture<TransactionsApplication>
     public async Task CreationValidationError()
     {
         //Arrange
-        var request = GenerateCreateRequest();
+        var request = new TransactionCreateRequestDTO();
 
         //Act
         var result = await _httpClient.Post<TransactionCreateRequestDTO,
@@ -66,10 +66,10 @@ public class TransactionTests : IClassFixture<TransactionsApplication>
     public async Task UpdateSuccess()
     {
         //Arrange
-        var request = GenerateUpdateRequest(_transactionId);
+        var request = GenerateUpdateRequest(_transactionId!);
 
         //Act
-        var result = await _httpClient.Post<TransactionUpdateRequestDTO,
+        var result = await _httpClient.Put<TransactionUpdateRequestDTO,
                                             ApiResult<TransactionResponseDTO>>(request);
 
         //Assert

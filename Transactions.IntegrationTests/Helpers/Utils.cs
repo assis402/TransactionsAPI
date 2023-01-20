@@ -18,6 +18,14 @@ internal static class Utils
         return JsonConvert.DeserializeObject<TResponse>(responseString);
     }
 
+    internal static async Task<TResponse> Put<TRequest, TResponse>(this HttpClient httpClient, TRequest request)
+    {
+        var result = await httpClient.PutAsJsonAsync(httpClient.BaseAddress, request);
+        var responseString = await result.Content.ReadAsStringAsync();
+        return JsonConvert.DeserializeObject<TResponse>(responseString);
+    }
+
+
     internal static HttpClient CreateClient(this TransactionsApplication application, string url)
     {
         var httpClientOptions = new WebApplicationFactoryClientOptions 
