@@ -34,6 +34,7 @@ public class Transaction
         Id = new ObjectId(updatedTransaction.Id);
         Title = updatedTransaction.Title;
         Type = updatedTransaction.Type!.Value;
+        Amount = updatedTransaction.Amount!.Value;
         Category = updatedTransaction.Category!.Value;
         Date = updatedTransaction.Date!.Value;
         Period = GetPeriod(updatedTransaction.Date!.Value);

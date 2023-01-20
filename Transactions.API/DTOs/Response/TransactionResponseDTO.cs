@@ -3,7 +3,7 @@ using Transactions.API.Entities;
 
 namespace Transactions.API.DTOs.Response;
 
-public record struct TransactionResponseDTO
+public readonly record struct TransactionResponseDTO
 {
     public string Id { get; init; }
     public string Title { get; init; }
@@ -14,7 +14,7 @@ public record struct TransactionResponseDTO
     public DateTime Date { get; init; }
 
     public static implicit operator TransactionResponseDTO(Transaction transaction)
-        => new TransactionResponseDTO
+        => new()
         {
             Id = transaction.Id.ToString(),
             Title = transaction.Title!,

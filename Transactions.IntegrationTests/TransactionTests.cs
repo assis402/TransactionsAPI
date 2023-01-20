@@ -14,7 +14,6 @@ public class TransactionTests : IClassFixture<TransactionsApplication>
     private readonly TransactionsApplication _application;
     private readonly HttpClient _httpClient;
     private const string _baseUrl = "https://localhost:5098/transaction";
-    private string? _transactionId;
 
     public TransactionTests(TransactionsApplication application)
     {
@@ -31,12 +30,11 @@ public class TransactionTests : IClassFixture<TransactionsApplication>
         //Act
         var result = await _httpClient.Post<TransactionCreateRequestDTO,
                                             ApiResult<TransactionResponseDTO>>(request);
-        _transactionId = result.Data.Id;
+
+        Environment.SetEnvironmentVariable("TEST_TRANSACTION_ID", result.Data.Id);
 
         //Assert
         Assert.True(result.Success);
-        Assert.NotNull(result.Data);
-
         Assert.Equal(request.Title, result.Data.Title);
         Assert.Equal(request.Amount, result.Data.Amount);
         Assert.Equal(request.Category, result.Data.Category);
@@ -66,7 +64,8 @@ public class TransactionTests : IClassFixture<TransactionsApplication>
     public async Task UpdateSuccess()
     {
         //Arrange
-        var request = GenerateUpdateRequest(_transactionId!);
+        var transactionId = Environment.GetEnvironmentVariable("TEST_TRANSACTION_ID");
+        var request = GenerateUpdateRequest(transactionId!);
 
         //Act
         var result = await _httpClient.Put<TransactionUpdateRequestDTO,
@@ -74,9 +73,7 @@ public class TransactionTests : IClassFixture<TransactionsApplication>
 
         //Assert
         Assert.True(result.Success);
-        Assert.NotNull(result.Data);
-
-        Assert.Equal(_transactionId, result.Data.Id);
+        Assert.Equal(transactionId, result.Data.Id);
         Assert.Equal(request.Title, result.Data.Title);
         Assert.Equal(request.Amount, result.Data.Amount);
         Assert.Equal(request.Category, result.Data.Category);
@@ -85,4 +82,6 @@ public class TransactionTests : IClassFixture<TransactionsApplication>
         Assert.Equal("012024", result.Data.Period);
         Assert.Equal((int)OK, result.StatusCode);
     }
+
+
 }
