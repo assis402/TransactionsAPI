@@ -9,27 +9,24 @@ using static Transactions.IntegrationTests.Helpers.TransactionHelper;
 
 namespace Transactions.IntegrationTests;
 
+[TestCaseOrderer(
+    "Transactions.IntegrationTests.Helpers.AlphabeticalTestOrderer",
+    "Transactions.IntegrationTests")]
 public class TransactionTests : IClassFixture<TransactionsApplication>
 {
     private readonly TransactionsApplication _application;
-    private readonly HttpClient _httpClient;
-    private const string _baseUrl = "https://localhost:5098/transaction";
 
-    public TransactionTests(TransactionsApplication application)
-    {
-        _application = application;
-        _httpClient = _application.CreateClient(_baseUrl);
-    }
+    public TransactionTests(TransactionsApplication application) => _application = application;
 
-    [Fact(DisplayName = "Transaction: Success in creation")]
+    [Fact(DisplayName = "(1) Transaction: Success in creation")]
     public async Task CreationSuccess()
     {
         //Arrange
         var request = GenerateCreateRequest();
 
         //Act
-        var result = await _httpClient.Post<TransactionCreateRequestDTO,
-                                            ApiResult<TransactionResponseDTO>>(request);
+        var result = await _application.Post<TransactionCreateRequestDTO,
+                                             ApiResult<TransactionResponseDTO>>(request);
 
         Environment.SetEnvironmentVariable("TEST_TRANSACTION_ID", result.Data.Id);
 
@@ -44,15 +41,15 @@ public class TransactionTests : IClassFixture<TransactionsApplication>
         Assert.Equal((int)OK, result.StatusCode);
     }
 
-    [Fact(DisplayName = "Transaction: Validation errors in creation")]
+    [Fact(DisplayName = "(2) Transaction: Validation errors in creation")]
     public async Task CreationValidationError()
     {
         //Arrange
         var request = new TransactionCreateRequestDTO();
 
         //Act
-        var result = await _httpClient.Post<TransactionCreateRequestDTO,
-                                            ApiResult<IDictionary<string, string[]>>>(request);
+        var result = await _application.Post<TransactionCreateRequestDTO,
+                                             ApiResult<IDictionary<string, string[]>>>(request);
 
         //Assert
         Assert.False(result.Success);
@@ -60,7 +57,7 @@ public class TransactionTests : IClassFixture<TransactionsApplication>
         Assert.Equal((int)BadRequest, result.StatusCode);
     }
 
-    [Fact(DisplayName = "Transaction: Success in update")]
+    [Fact(DisplayName = "(3) Transaction: Success in update")]
     public async Task UpdateSuccess()
     {
         //Arrange
@@ -68,7 +65,7 @@ public class TransactionTests : IClassFixture<TransactionsApplication>
         var request = GenerateUpdateRequest(transactionId!);
 
         //Act
-        var result = await _httpClient.Put<TransactionUpdateRequestDTO,
+        var result = await _application.Put<TransactionUpdateRequestDTO,
                                             ApiResult<TransactionResponseDTO>>(request);
 
         //Assert
@@ -83,5 +80,69 @@ public class TransactionTests : IClassFixture<TransactionsApplication>
         Assert.Equal((int)OK, result.StatusCode);
     }
 
+    [Fact(DisplayName = "(5) Transaction: Validation errors in update")]
+    public async Task UpdateValidationError()
+    {
+        //Arrange
+        var request = new TransactionUpdateRequestDTO();
 
+        //Act
+        var result = await _application.Put<TransactionUpdateRequestDTO,
+                                            ApiResult<IDictionary<string, string[]>>>(request);
+
+        //Assert
+        Assert.False(result.Success);
+        Assert.NotNull(result.Data);
+        Assert.Equal((int)BadRequest, result.StatusCode);
+    }
+
+    //[Fact(DisplayName = "(5) Transaction: Validation errors in update")]
+    //public async Task GetSuccess()
+    //{
+    //    //Arrange
+    //    var request = GenerateCreateRequest();
+    //    var period = "012023";
+    //    await _httpClient.Post<TransactionCreateRequestDTO,
+    //                           ApiResult<TransactionResponseDTO>>(request);
+
+    //    //Act
+    //    var result = await _httpClient.Get<DashboardResponseDTO>(period);
+
+    //    //Assert
+    //    Assert.False(result.Success);
+    //    Assert.NotNull(result.Data);
+    //    Assert.Equal((int)BadRequest, result.StatusCode);
+    //}
+
+    [Fact(DisplayName = "(6) Transaction: Success in delete")]
+    public async Task DeleteSuccess()
+    {
+        //Arrange
+        var transactionId = Environment.GetEnvironmentVariable("TEST_TRANSACTION_ID");
+
+        //Act
+        var result = await _application.Delete<ApiResult<string>>(transactionId);
+
+        //Assert
+        Assert.True(result.Success);
+        Assert.NotNull(result.Title);
+        Assert.Equal($"Transaction with id {transactionId} successfully deleted", result.Title);
+        Assert.Equal((int)OK, result.StatusCode);
+    }
+
+    [Fact(DisplayName = "(7) Transaction: Validation errors in delete")]
+    public async Task DeleteValidationError()
+    {
+        //Arrange
+        var transactionId = "";
+
+        //Act
+        var result = await _application.Delete<ApiResult<string>>(transactionId);
+
+        //Assert
+        Assert.False(result.Success);
+        Assert.NotNull(result.Title);
+        Assert.Equal("The \"Id\" parameter is required.", result.Title);
+        Assert.Equal((int)BadRequest, result.StatusCode);
+    }
 }

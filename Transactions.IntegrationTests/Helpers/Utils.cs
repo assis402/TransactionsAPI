@@ -11,28 +11,5 @@ namespace Transactions.IntegrationTests.Helpers;
 
 internal static class Utils
 {
-    internal static async Task<TResponse> Post<TRequest, TResponse>(this HttpClient httpClient, TRequest request)
-    {
-        var result = await httpClient.PostAsJsonAsync(httpClient.BaseAddress, request);
-        var responseString = await result.Content.ReadAsStringAsync();
-        return JsonConvert.DeserializeObject<TResponse>(responseString);
-    }
-
-    internal static async Task<TResponse> Put<TRequest, TResponse>(this HttpClient httpClient, TRequest request)
-    {
-        var result = await httpClient.PutAsJsonAsync(httpClient.BaseAddress, request);
-        var responseString = await result.Content.ReadAsStringAsync();
-        return JsonConvert.DeserializeObject<TResponse>(responseString);
-    }
-
-
-    internal static HttpClient CreateClient(this TransactionsApplication application, string url)
-    {
-        var httpClientOptions = new WebApplicationFactoryClientOptions 
-        {
-            BaseAddress = new Uri(url)
-        };
-
-        return application.CreateClient(httpClientOptions);
-    }
+    
 }

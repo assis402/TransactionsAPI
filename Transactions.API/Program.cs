@@ -13,6 +13,7 @@ using static Transactions.API.Helpers.ResultHelper;
 using System.Net;
 using Transactions.API.Helpers;
 using Transactions.API.Converters;
+using Transactions.API.Builders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -83,17 +84,29 @@ static void MapTransactionActions(WebApplication app)
     app.MapGet("/transaction", async
         (TransactionsContextDb database,
          string? period) => 
-        {            
-            if (period is null)
-                return ErrorResult("The \"Period\" parameter is required.");
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(period))
+                    return ErrorResult("The \"Period\" parameter is required.");
 
-            var filter = GetByPeriodFilterDefinition(period);
-            var result = await (await database.Transactions.FindAsync(filter)).ToListAsync();
+                var filter = GetByPeriodFilterDefinition(period);
+                var result = await (await database.Transactions.FindAsync(filter)).ToListAsync();
 
-            if(result.Count == 0)
-                return NotFoundResult("No transactions found.");
+                if(result.Count == 0)
+                    return NotFoundResult("No transactions found.");
 
-            return SuccessResult(result.ConvertToDTO());
+                var dashboardBuilder = new DashboardBuilder();
+                dashboardBuilder.SetTransactions(result);
+                dashboardBuilder.SetIncome();
+                dashboardBuilder.SetOutcome();
+
+                return SuccessResult(dashboardBuilder.Build());
+            }
+            catch (Exception ex)
+            {
+                return CriticalErrorResult(ex.Message);
+            }
         })
         .ProducesValidationProblem()
         .Produces(StatusCodes.Status200OK)
@@ -105,20 +118,27 @@ static void MapTransactionActions(WebApplication app)
     app.MapPut("/transaction", async
         (TransactionsContextDb database,
          TransactionUpdateRequestDTO transactionDTO) => 
-        {            
-            if (!MiniValidator.TryValidate(transactionDTO, out var errors))
-                return ErrorResult(errors);
+        {
+            try
+            {
+                if (!MiniValidator.TryValidate(transactionDTO, out var errors))
+                    return ErrorResult(errors);
 
-            var transaction = new Transaction(transactionDTO);
+                var transaction = new Transaction(transactionDTO);
 
-            var filter = GetByIdFilterDefinition(transactionDTO.Id!);   
-            var updateDefinition = UpdateDefinition(transaction);
-            var result = await database.Transactions.UpdateOneAsync(filter, updateDefinition);
+                var filter = GetByIdFilterDefinition(transactionDTO.Id!);   
+                var updateDefinition = UpdateDefinition(transaction);
+                var result = await database.Transactions.UpdateOneAsync(filter, updateDefinition);
 
-            if(result.ModifiedCount == 0)
-                ErrorResult("It was not possible to update the transaction with the given id.");    
+                if(result.ModifiedCount == 0)
+                    ErrorResult("It was not possible to update the transaction with the given id.");    
 
-            return SuccessResult<TransactionResponseDTO>(transaction);
+                return SuccessResult<TransactionResponseDTO>(transaction);
+            }
+            catch (Exception ex)
+            {
+                return CriticalErrorResult(ex.Message);
+            }
         })
         .ProducesValidationProblem()
         .Produces(StatusCodes.Status200OK)
@@ -130,16 +150,23 @@ static void MapTransactionActions(WebApplication app)
         (TransactionsContextDb database,
          string? id) => 
         {
-            if (id is null)
-                return ErrorResult("The \"Id\" parameter is required.");
+            try
+            {
+                if (string.IsNullOrEmpty(id))
+                    return ErrorResult("The \"Id\" parameter is required.");
 
-            var filter = GetByIdFilterDefinition(id!);
-            var result = await database.Transactions.DeleteOneAsync(filter); 
+                var filter = GetByIdFilterDefinition(id!);
+                var result = await database.Transactions.DeleteOneAsync(filter); 
 
-            if(result.DeletedCount == 0)
-                ErrorResult("It was not possible to delete the transaction with the given id.");
+                if(result.DeletedCount == 0)
+                    ErrorResult("It was not possible to delete the transaction with the given id.");
 
-            return SuccessResult($"Transaction with id {id} successfully deleted"); 
+                return SuccessResult($"Transaction with id {id} successfully deleted"); 
+            }
+            catch (Exception ex)
+            {
+                return CriticalErrorResult(ex.Message);
+            }
         })
         .ProducesValidationProblem()
         .Produces(StatusCodes.Status200OK)
