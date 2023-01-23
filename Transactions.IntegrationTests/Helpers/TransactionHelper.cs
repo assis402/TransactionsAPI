@@ -25,6 +25,16 @@ internal static class TransactionHelper
             Date = new DateTime(2024, 01, 01)
         };
 
+    internal static TransactionCreateRequestDTO GenerateCreateRequest(DateTime date)
+        => new()
+        {
+            Title = "title",
+            Type = TransactionType.Outcome,
+            Amount = 100,
+            Category = TransactionCategory.Purchases,
+            Date = date
+        };
+
     internal static TransactionUpdateRequestDTO GenerateUpdateRequest(string id)
         => new()
         {
