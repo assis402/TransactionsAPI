@@ -165,5 +165,39 @@ public class TransactionTests : IClassFixture<TransactionsApplication>
         Assert.Equal("The \"Id\" parameter is required.", result.Title);
         Assert.Equal((int)BadRequest, result.StatusCode);
     }
+
+    [Fact(DisplayName = "(9) Transaction: Success in delete by period")]
+    public async Task UT9_DeleteByPeriodSuccess()
+    {
+        //Arrange
+        var request = GenerateCreateRequest(new DateTime(2025, 02, 01));
+        var period = "022025";
+
+        //Act
+        await _application.Post(request);
+        var result = await _application.DeleteByPeriod<ApiResult<string>>(period);
+
+        //Assert
+        Assert.True(result.Success);
+        Assert.NotNull(result.Title);
+        Assert.Equal($"Transaction with id {transactionId} successfully deleted", result.Title);
+        Assert.Equal((int)OK, result.StatusCode);
+    }
+
+    [Fact(DisplayName = "(8) Transaction: Validation errors in delete")]
+    public async Task UT8_DeleteValidationError()
+    {
+        //Arrange
+        var transactionId = "";
+
+        //Act
+        var result = await _application.Delete<ApiResult<string>>(transactionId);
+
+        //Assert
+        Assert.False(result.Success);
+        Assert.NotNull(result.Title);
+        Assert.Equal("The \"Id\" parameter is required.", result.Title);
+        Assert.Equal((int)BadRequest, result.StatusCode);
+    }
     #endregion
 }
