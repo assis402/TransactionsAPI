@@ -5,10 +5,10 @@ namespace Transactions.API.DTOs.Request;
 
 public record struct TransactionUpdateRequestDTO
 {
-    [Required(AllowEmptyStrings=false), Display(Name = nameof(Id))]
+    [Required(AllowEmptyStrings = false), Display(Name = nameof(Id))]
     public string? Id { get; init; }
 
-    [Required(AllowEmptyStrings=false), Display(Name = nameof(Title))]
+    [Required(AllowEmptyStrings = false), Display(Name = nameof(Title))]
     public string? Title { get; init; }
 
     [Required, Display(Name = nameof(Type))]

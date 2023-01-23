@@ -1,6 +1,6 @@
 namespace Transactions.API.Entities;
 
-public enum TransactionCategory 
+public enum TransactionCategory
 {
     Purchases,
     Food,

@@ -1,9 +1,6 @@
-using Microsoft.AspNetCore.Mvc.Testing;
-using System.Net.Http.Json;
 using Transactions.API.DTOs.Request;
 using Transactions.API.DTOs.Response;
 using Transactions.API.Helpers;
-using Transactions.IntegrationTests.Helpers;
 using static System.Net.HttpStatusCode;
 using static Transactions.IntegrationTests.Helpers.TransactionHelper;
 
@@ -19,7 +16,7 @@ public class TransactionTests : IClassFixture<TransactionsApplication>
     public TransactionTests(TransactionsApplication application) => _application = application;
 
     [Fact(DisplayName = "(1) Transaction: Success in creation")]
-    public async Task CreationSuccess()
+    public async Task UT1_CreationSuccess()
     {
         //Arrange
         var request = GenerateCreateRequest();
@@ -42,7 +39,7 @@ public class TransactionTests : IClassFixture<TransactionsApplication>
     }
 
     [Fact(DisplayName = "(2) Transaction: Validation errors in creation")]
-    public async Task CreationValidationError()
+    public async Task UT2_CreationValidationError()
     {
         //Arrange
         var request = new TransactionCreateRequestDTO();
@@ -58,7 +55,7 @@ public class TransactionTests : IClassFixture<TransactionsApplication>
     }
 
     [Fact(DisplayName = "(3) Transaction: Success in update")]
-    public async Task UpdateSuccess()
+    public async Task UT3_UpdateSuccess()
     {
         //Arrange
         var transactionId = Environment.GetEnvironmentVariable("TEST_TRANSACTION_ID");
@@ -80,8 +77,8 @@ public class TransactionTests : IClassFixture<TransactionsApplication>
         Assert.Equal((int)OK, result.StatusCode);
     }
 
-    [Fact(DisplayName = "(5) Transaction: Validation errors in update")]
-    public async Task UpdateValidationError()
+    [Fact(DisplayName = "(4) Transaction: Validation errors in update")]
+    public async Task UT4_UpdateValidationError()
     {
         //Arrange
         var request = new TransactionUpdateRequestDTO();
@@ -96,26 +93,26 @@ public class TransactionTests : IClassFixture<TransactionsApplication>
         Assert.Equal((int)BadRequest, result.StatusCode);
     }
 
-    //[Fact(DisplayName = "(5) Transaction: Validation errors in update")]
-    //public async Task GetSuccess()
-    //{
-    //    //Arrange
-    //    var request = GenerateCreateRequest();
-    //    var period = "012023";
-    //    await _httpClient.Post<TransactionCreateRequestDTO,
-    //                           ApiResult<TransactionResponseDTO>>(request);
+    [Fact(DisplayName = "(5) Transaction: Success in Get")]
+    public async Task UT5_GetSuccess()
+    {
+        //Arrange
+        var period = "012024";
 
-    //    //Act
-    //    var result = await _httpClient.Get<DashboardResponseDTO>(period);
+        //Act
+        var result = await _application.Get<ApiResult<DashboardResponseDTO>>(period);
 
-    //    //Assert
-    //    Assert.False(result.Success);
-    //    Assert.NotNull(result.Data);
-    //    Assert.Equal((int)BadRequest, result.StatusCode);
-    //}
+        //Assert
+        Assert.True(result.Success);
+        Assert.Equal((int)OK, result.StatusCode);
+        Assert.Equal(5, result.Data.Transactions.Count);
+        Assert.Equal(113.94M, result.Data.Outcome.Total);
+        Assert.Equal(313.94M, result.Data.Income.Total);
+        Assert.Equal(427.88M, result.Data.Sum.Total);
+    }
 
-    [Fact(DisplayName = "(6) Transaction: Success in delete")]
-    public async Task DeleteSuccess()
+    [Fact(DisplayName = "(7) Transaction: Success in delete")]
+    public async Task UT7_DeleteSuccess()
     {
         //Arrange
         var transactionId = Environment.GetEnvironmentVariable("TEST_TRANSACTION_ID");
@@ -130,8 +127,8 @@ public class TransactionTests : IClassFixture<TransactionsApplication>
         Assert.Equal((int)OK, result.StatusCode);
     }
 
-    [Fact(DisplayName = "(7) Transaction: Validation errors in delete")]
-    public async Task DeleteValidationError()
+    [Fact(DisplayName = "(8) Transaction: Validation errors in delete")]
+    public async Task UT8_DeleteValidationError()
     {
         //Arrange
         var transactionId = "";

@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Routing;
-using System;
-using Transactions.API.DTOs.Response;
+﻿using Transactions.API.DTOs.Response;
 using Transactions.API.Entities;
 
 namespace Transactions.API.Builders;
@@ -8,6 +6,7 @@ namespace Transactions.API.Builders;
 public class DashboardBuilder
 {
     private DashboardResponseDTO _dashboard = new();
+
     public DashboardResponseDTO Build() => _dashboard;
 
     public DashboardBuilder SetTransactions(List<Transaction> transactions)
@@ -18,7 +17,7 @@ public class DashboardBuilder
         return this;
     }
 
-    public DashboardBuilder SetIncome() 
+    public DashboardBuilder SetIncome()
     {
         var incomeTransactions = _dashboard.Transactions.Where(_ => _.Type == TransactionType.Income)
                                                         .OrderByDescending(_ => _.Date);

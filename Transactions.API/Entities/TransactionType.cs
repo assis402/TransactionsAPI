@@ -1,6 +1,6 @@
 namespace Transactions.API.Entities;
 
-public enum TransactionType 
+public enum TransactionType
 {
     Income,
     Outcome

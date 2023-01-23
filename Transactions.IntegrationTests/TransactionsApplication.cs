@@ -1,13 +1,8 @@
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
-using System.Net.Http;
 using System.Net.Http.Json;
-using Transactions.API.DTOs.Request;
-using Transactions.API.DTOs.Response;
 using Transactions.API.Entities;
-using Transactions.API.Helpers;
-using static System.Net.Mime.MediaTypeNames;
 using static Transactions.IntegrationTests.Helpers.TransactionHelper;
 
 namespace Transactions.IntegrationTests;
@@ -20,30 +15,29 @@ public class TransactionsApplication : WebApplicationFactory<Program>, IDisposab
     public TransactionsApplication()
     {
         _httpClient = CreateClient(_baseUrl);
-        CreateBaseTestAsync().GetAwaiter();
+        CreateBaseTest().GetAwaiter();
     }
 
-    private async Task CreateBaseTestAsync()
-    {
-        var income = GenerateCreateRequest(TransactionType.Income);
-        var outcome = GenerateCreateRequest(TransactionType.Income);
-        
-        await Post(income);
-        await Post(income);
-        await Post(outcome);
-        await Post(outcome);
-    }
-
-    public void Dispose()
-    {
-        //do something
-    }
+    public void Dispose() => RemoveBaseTest().GetAwaiter();
 
     protected override IHost CreateHost(IHostBuilder builder)
     {
         builder.UseEnvironment("IntegrationTests");
         return base.CreateHost(builder);
     }
+
+    private async Task CreateBaseTest()
+    {
+        var income = GenerateCreateRequest(TransactionType.Income);
+        var outcome = GenerateCreateRequest(TransactionType.Outcome);
+
+        await Post(income);
+        await Post(income);
+        await Post(outcome);
+        await Post(outcome);
+    }
+
+    private async Task RemoveBaseTest() => await DeleteByPeriod<string>("012024");
 
     private HttpClient CreateClient(string url)
     {
@@ -62,7 +56,7 @@ public class TransactionsApplication : WebApplicationFactory<Program>, IDisposab
         return JsonConvert.DeserializeObject<TResponse>(responseString);
     }
 
-    public async Task Post<TRequest>(TRequest request) 
+    public async Task Post<TRequest>(TRequest request)
         => await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress, request);
 
     public async Task<TResponse> Post<TRequest, TResponse>(TRequest request)
@@ -82,6 +76,13 @@ public class TransactionsApplication : WebApplicationFactory<Program>, IDisposab
     public async Task<TResponse> Delete<TResponse>(string? id)
     {
         var result = await _httpClient.DeleteAsync($"{_httpClient.BaseAddress}?id={id}");
+        var responseString = await result.Content.ReadAsStringAsync();
+        return JsonConvert.DeserializeObject<TResponse>(responseString);
+    }
+
+    public async Task<TResponse> DeleteByPeriod<TResponse>(string? period)
+    {
+        var result = await _httpClient.DeleteAsync($"{_httpClient.BaseAddress}/delete?period={period}");
         var responseString = await result.Content.ReadAsStringAsync();
         return JsonConvert.DeserializeObject<TResponse>(responseString);
     }

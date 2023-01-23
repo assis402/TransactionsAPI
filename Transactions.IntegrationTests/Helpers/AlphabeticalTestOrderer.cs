@@ -2,6 +2,7 @@
 using Xunit.Sdk;
 
 namespace Transactions.IntegrationTests.Helpers;
+
 internal class AlphabeticalTestOrderer : ITestCaseOrderer
 {
     /// <summary>

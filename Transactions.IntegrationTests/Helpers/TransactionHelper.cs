@@ -6,7 +6,7 @@ namespace Transactions.IntegrationTests.Helpers;
 internal static class TransactionHelper
 {
     internal static TransactionCreateRequestDTO GenerateCreateRequest()
-        => new ()
+        => new()
         {
             Title = "title",
             Type = TransactionType.Outcome,
@@ -22,11 +22,11 @@ internal static class TransactionHelper
             Type = type,
             Amount = 56.97M,
             Category = TransactionCategory.Purchases,
-            Date = new DateTime(2023, 01, 01)
+            Date = new DateTime(2024, 01, 01)
         };
 
     internal static TransactionUpdateRequestDTO GenerateUpdateRequest(string id)
-        => new ()
+        => new()
         {
             Id = id,
             Title = "title novo",

@@ -10,9 +10,9 @@ public class TransactionsContextDb
     private IMongoDatabase _database { get; }
 
     public IMongoCollection<Transaction> Transactions
-        {
-            get => _database.GetCollection<Transaction>("transactions");
-        }
+    {
+        get => _database.GetCollection<Transaction>("transactions");
+    }
 
     public TransactionsContextDb(IConfiguration configuration)
     {

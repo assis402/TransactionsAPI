@@ -5,7 +5,7 @@ namespace Transactions.API.DTOs.Request;
 
 public record struct FrequentTransactionCreateRequestDTO
 {
-    [Required(AllowEmptyStrings=false), Display(Name = nameof(Title))]
+    [Required(AllowEmptyStrings = false), Display(Name = nameof(Title))]
     public string? Title { get; init; }
 
     [Required, Range(0, 1, ErrorMessage = "Enter a valid Type"), Display(Name = nameof(Type))]

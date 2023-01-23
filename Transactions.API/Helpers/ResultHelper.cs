@@ -2,7 +2,7 @@ using System.Net;
 
 namespace Transactions.API.Helpers;
 
-public static class ResultHelper 
+public static class ResultHelper
 {
     public static IResult SuccessResult<T>(T data)
         => Results.Ok(new ApiResult<T>(true, null, data, HttpStatusCode.OK));
@@ -12,7 +12,7 @@ public static class ResultHelper
 
     public static IResult NotFoundResult<T>(T data)
         => Results.NotFound(new ApiResult<T>(true, null, data, HttpStatusCode.OK));
-    
+
     public static IResult ErrorResult(string errorTitle)
         => Results.BadRequest(new ApiResult<string>(false, errorTitle, null, HttpStatusCode.BadRequest));
 

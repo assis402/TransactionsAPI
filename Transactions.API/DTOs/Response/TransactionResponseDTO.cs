@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using Transactions.API.Entities;
 
 namespace Transactions.API.DTOs.Response;
