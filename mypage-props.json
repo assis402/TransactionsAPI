@@ -1,0 +1,7 @@
+{
+	"description": {
+		"ptBR": "Minimal API em C# .NET 7 com persistência de dados em MongoDB",
+		"enUS": "Minimal API with C# .NET 7 and Data Persistence in MongoDB"
+	},
+	"videoUrl": "https://www.youtube.com/watch?v=hCBK1h5W6XI"
+}
