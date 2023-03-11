@@ -1,5 +1,5 @@
 {
-	"description": {
+	"descriptionDictonary": {
 		"PT_BR": "Minimal API em C# .NET 7 com persistência de dados em MongoDB",
 		"EN_US": "Minimal API with C# .NET 7 and Data Persistence in MongoDB"
 	},
