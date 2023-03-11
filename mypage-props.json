@@ -4,5 +4,5 @@
 		"EN_US": "Minimal API with C# .NET 7 and Data Persistence in MongoDB"
 	},
 	"videoUrl": "https://www.youtube.com/watch?v=hCBK1h5W6XI",
-	"tags": [ ".NET 7", "Minimal API", "MongoDB" ]
+	"tags": [".NET 7", "Minimal API", "MongoDB"]
 }
