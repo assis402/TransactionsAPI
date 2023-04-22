@@ -59,17 +59,17 @@ static void MapTransactionActions(WebApplication app)
 {
     app.MapPost("/transaction", async
         (TransactionsContextDb database,
-         TransactionCreateRequestDTO transactionDTO) =>
+         TransactionCreateRequestDto transactionDto) =>
         {
             try
             {
-                if (!MiniValidator.TryValidate(transactionDTO, out var errors))
+                if (!MiniValidator.TryValidate(transactionDto, out var errors))
                     return ErrorResult(errors);
 
-                var transaction = new Transaction(transactionDTO);
+                var transaction = new Transaction(transactionDto);
                 await database.Transactions.InsertOneAsync(transaction);
 
-                return SuccessResult<TransactionResponseDTO>(transaction);
+                return SuccessResult<TransactionResponseDto>(transaction);
             }
             catch (Exception ex)
             {
@@ -118,23 +118,23 @@ static void MapTransactionActions(WebApplication app)
 
     app.MapPut("/transaction", async
         (TransactionsContextDb database,
-         TransactionUpdateRequestDTO transactionDTO) =>
+         TransactionUpdateRequestDto transactionDto) =>
         {
             try
             {
-                if (!MiniValidator.TryValidate(transactionDTO, out var errors))
+                if (!MiniValidator.TryValidate(transactionDto, out var errors))
                     return ErrorResult(errors);
 
-                var transaction = new Transaction(transactionDTO);
+                var transaction = new Transaction(transactionDto);
 
-                var filter = GetByIdFilterDefinition(transactionDTO.Id!);
+                var filter = GetByIdFilterDefinition(transactionDto.Id!);
                 var updateDefinition = UpdateDefinition(transaction);
                 var result = await database.Transactions.UpdateOneAsync(filter, updateDefinition);
 
                 if (result.ModifiedCount == 0)
                     ErrorResult("It was not possible to update the transaction with the given id.");
 
-                return SuccessResult<TransactionResponseDTO>(transaction);
+                return SuccessResult<TransactionResponseDto>(transaction);
             }
             catch (Exception ex)
             {
@@ -185,7 +185,7 @@ static void MapTransactionActions(WebApplication app)
                     return ErrorResult("The \"Period\" parameter is required.");
 
                 var filter = GetByPeriodFilterDefinition(period);
-                var result = await database.Transactions.DeleteManyAsync(filter);
+                await database.Transactions.DeleteManyAsync(filter);
 
                 return SuccessResult($"Transactions with period \"{period}\" successfully deleted");
             }

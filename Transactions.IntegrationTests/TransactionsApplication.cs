@@ -18,7 +18,7 @@ public class TransactionsApplication : WebApplicationFactory<Program>, IDisposab
         CreateBaseTest().GetAwaiter();
     }
 
-    public void Dispose() => RemoveBaseTest().GetAwaiter();
+    public new void Dispose() => RemoveBaseTest().GetAwaiter();
 
     protected override IHost CreateHost(IHostBuilder builder)
     {

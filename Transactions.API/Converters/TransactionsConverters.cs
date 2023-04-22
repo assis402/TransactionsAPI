@@ -5,6 +5,6 @@ namespace Transactions.API.Converters;
 
 public static class TransactionConverters
 {
-    public static List<TransactionResponseDTO> ConvertToDTO(this List<Transaction> transactions)
-        => transactions.Select(_ => (TransactionResponseDTO)_).ToList();
+    public static List<TransactionResponseDto> ConvertToDto(this List<Transaction> transactions)
+        => transactions.Select(_ => (TransactionResponseDto)_).ToList();
 }

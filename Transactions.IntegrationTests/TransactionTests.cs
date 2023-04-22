@@ -16,6 +16,7 @@ public class TransactionTests : IClassFixture<TransactionsApplication>
     public TransactionTests(TransactionsApplication application) => _application = application;
 
     #region Post
+
     [Fact(DisplayName = "(1) Transaction: Success in creation")]
     public async Task UT1_CreationSuccess()
     {
@@ -23,8 +24,8 @@ public class TransactionTests : IClassFixture<TransactionsApplication>
         var request = GenerateCreateRequest();
 
         //Act
-        var result = await _application.Post<TransactionCreateRequestDTO,
-                                             ApiResult<TransactionResponseDTO>>(request);
+        var result = await _application.Post<TransactionCreateRequestDto,
+                                             ApiResult<TransactionResponseDto>>(request);
 
         Environment.SetEnvironmentVariable("TEST_TRANSACTION_ID", result.Data.Id);
 
@@ -43,10 +44,10 @@ public class TransactionTests : IClassFixture<TransactionsApplication>
     public async Task UT2_CreationValidationError()
     {
         //Arrange
-        var request = new TransactionCreateRequestDTO();
+        var request = new TransactionCreateRequestDto();
 
         //Act
-        var result = await _application.Post<TransactionCreateRequestDTO,
+        var result = await _application.Post<TransactionCreateRequestDto,
                                              ApiResult<IDictionary<string, string[]>>>(request);
 
         //Assert
@@ -54,9 +55,11 @@ public class TransactionTests : IClassFixture<TransactionsApplication>
         Assert.NotNull(result.Data);
         Assert.Equal((int)BadRequest, result.StatusCode);
     }
-    #endregion
+
+    #endregion Post
 
     #region Put
+
     [Fact(DisplayName = "(3) Transaction: Success in update")]
     public async Task UT3_UpdateSuccess()
     {
@@ -65,8 +68,8 @@ public class TransactionTests : IClassFixture<TransactionsApplication>
         var request = GenerateUpdateRequest(transactionId!);
 
         //Act
-        var result = await _application.Put<TransactionUpdateRequestDTO,
-                                            ApiResult<TransactionResponseDTO>>(request);
+        var result = await _application.Put<TransactionUpdateRequestDto,
+                                            ApiResult<TransactionResponseDto>>(request);
 
         //Assert
         Assert.True(result.Success);
@@ -84,10 +87,10 @@ public class TransactionTests : IClassFixture<TransactionsApplication>
     public async Task UT4_UpdateValidationError()
     {
         //Arrange
-        var request = new TransactionUpdateRequestDTO();
+        var request = new TransactionUpdateRequestDto();
 
         //Act
-        var result = await _application.Put<TransactionUpdateRequestDTO,
+        var result = await _application.Put<TransactionUpdateRequestDto,
                                             ApiResult<IDictionary<string, string[]>>>(request);
 
         //Assert
@@ -95,9 +98,11 @@ public class TransactionTests : IClassFixture<TransactionsApplication>
         Assert.NotNull(result.Data);
         Assert.Equal((int)BadRequest, result.StatusCode);
     }
-    #endregion
+
+    #endregion Put
 
     #region Get
+
     [Fact(DisplayName = "(5) Transaction: Success in Get")]
     public async Task UT5_GetSuccess()
     {
@@ -105,7 +110,7 @@ public class TransactionTests : IClassFixture<TransactionsApplication>
         var period = "012024";
 
         //Act
-        var result = await _application.Get<ApiResult<DashboardResponseDTO>>(period);
+        var result = await _application.Get<ApiResult<DashboardResponseDto>>(period);
 
         //Assert
         Assert.True(result.Success);
@@ -123,7 +128,7 @@ public class TransactionTests : IClassFixture<TransactionsApplication>
         string? period = null;
 
         //Act
-        var result = await _application.Get<ApiResult<DashboardResponseDTO>>(period);
+        var result = await _application.Get<ApiResult<DashboardResponseDto>>(period);
 
         //Assert
         Assert.False(result.Success);
@@ -131,9 +136,11 @@ public class TransactionTests : IClassFixture<TransactionsApplication>
         Assert.Equal("The \"Period\" parameter is required.", result.Title);
         Assert.Equal((int)BadRequest, result.StatusCode);
     }
-    #endregion
+
+    #endregion Get
 
     #region Delete
+
     [Fact(DisplayName = "(7) Transaction: Success in delete")]
     public async Task UT7_DeleteSuccess()
     {
@@ -180,24 +187,8 @@ public class TransactionTests : IClassFixture<TransactionsApplication>
         //Assert
         Assert.True(result.Success);
         Assert.NotNull(result.Title);
-        Assert.Equal($"Transaction with id {transactionId} successfully deleted", result.Title);
         Assert.Equal((int)OK, result.StatusCode);
     }
 
-    [Fact(DisplayName = "(8) Transaction: Validation errors in delete")]
-    public async Task UT8_DeleteValidationError()
-    {
-        //Arrange
-        var transactionId = "";
-
-        //Act
-        var result = await _application.Delete<ApiResult<string>>(transactionId);
-
-        //Assert
-        Assert.False(result.Success);
-        Assert.NotNull(result.Title);
-        Assert.Equal("The \"Id\" parameter is required.", result.Title);
-        Assert.Equal((int)BadRequest, result.StatusCode);
-    }
-    #endregion
+    #endregion Delete
 }

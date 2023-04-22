@@ -5,13 +5,13 @@ namespace Transactions.API.Builders;
 
 public class DashboardBuilder
 {
-    private DashboardResponseDTO _dashboard = new();
+    private DashboardResponseDto _dashboard = new();
 
-    public DashboardResponseDTO Build() => _dashboard;
+    public DashboardResponseDto Build() => _dashboard;
 
     public DashboardBuilder SetTransactions(List<Transaction> transactions)
     {
-        _dashboard.Transactions = transactions.Select(_ => (TransactionResponseDTO)_)
+        _dashboard.Transactions = transactions.Select(_ => (TransactionResponseDto)_)
                                               .OrderByDescending(_ => _.Date)
                                               .ToList();
         return this;

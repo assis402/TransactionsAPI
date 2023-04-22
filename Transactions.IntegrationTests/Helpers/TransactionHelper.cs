@@ -5,7 +5,7 @@ namespace Transactions.IntegrationTests.Helpers;
 
 internal static class TransactionHelper
 {
-    internal static TransactionCreateRequestDTO GenerateCreateRequest()
+    internal static TransactionCreateRequestDto GenerateCreateRequest()
         => new()
         {
             Title = "title",
@@ -15,7 +15,7 @@ internal static class TransactionHelper
             Date = new DateTime(2023, 01, 01)
         };
 
-    internal static TransactionCreateRequestDTO GenerateCreateRequest(TransactionType type)
+    internal static TransactionCreateRequestDto GenerateCreateRequest(TransactionType type)
         => new()
         {
             Title = "title",
@@ -25,7 +25,7 @@ internal static class TransactionHelper
             Date = new DateTime(2024, 01, 01)
         };
 
-    internal static TransactionCreateRequestDTO GenerateCreateRequest(DateTime date)
+    internal static TransactionCreateRequestDto GenerateCreateRequest(DateTime date)
         => new()
         {
             Title = "title",
@@ -35,7 +35,7 @@ internal static class TransactionHelper
             Date = date
         };
 
-    internal static TransactionUpdateRequestDTO GenerateUpdateRequest(string id)
+    internal static TransactionUpdateRequestDto GenerateUpdateRequest(string id)
         => new()
         {
             Id = id,

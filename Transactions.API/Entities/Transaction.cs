@@ -18,7 +18,7 @@ public class Transaction
     public DateTime CreationDate { get; private set; }
     public DateTime? UpdateDate { get; private set; }
 
-    public Transaction(TransactionCreateRequestDTO newTransaction)
+    public Transaction(TransactionCreateRequestDto newTransaction)
     {
         Id = ObjectId.GenerateNewId();
         Title = newTransaction.Title;
@@ -30,7 +30,7 @@ public class Transaction
         CreationDate = DateTime.Now;
     }
 
-    public Transaction(TransactionUpdateRequestDTO updatedTransaction)
+    public Transaction(TransactionUpdateRequestDto updatedTransaction)
     {
         Id = new ObjectId(updatedTransaction.Id);
         Title = updatedTransaction.Title;

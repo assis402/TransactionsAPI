@@ -3,7 +3,7 @@ using Transactions.API.Entities;
 
 namespace Transactions.API.DTOs.Request;
 
-public record struct FrequentTransactionUpdateRequestDTO
+public record struct FrequentTransactionUpdateRequestDto
 {
     [Required(AllowEmptyStrings = false), Display(Name = nameof(Id))]
     public string? Id { get; init; }
