@@ -5,17 +5,21 @@ This API was built to be consumed by the App "continhas" (). Its function is to 
 
 ## Structure
 ```
-├── app
-│   ├── app.go
-│   ├── handler          // Our API core handlers
-│   │   ├── common.go    // Common response functions
-│   │   ├── projects.go  // APIs for Project model
-│   │   └── tasks.go     // APIs for Task model
-│   └── model
-│       └── model.go     // Models for our application
-├── config
-│   └── config.go        // Configuration
-└── main.go
+└── Solution
+   ├── API                   // Presentation and business layer (Minimal API)
+   │   ├── Builders          // Logic for building complex objects step by step
+   │   ├── Convertes         // Mapping entities to Dto
+   │   ├── Data              // MongoDB database configurations
+   │   ├── DTOs              // Data transfer objects to API response 
+   │   ├── Entities          // Entities related to Transactions with their respective business logic
+   │   ├── Helpers           // Utility classes with specific goals
+   │   ├── appsettings.json  // Contains environment variables, database connection string, log configuration...
+   │   └── Program.cs        // Application startup and configuration, dependency injections and end-point mapping
+   │    
+   └── IntegrationTests            // Integration Tests layer 
+       ├── Helpers                     // Utility classes to build Dtos for testing
+       ├── TransactionsApplication.cs  // In-memory API initialization
+       └── TransactionTests.cs         // Testing in the context of Transactions
 ```
 
 ## API
