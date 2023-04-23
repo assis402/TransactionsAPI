@@ -35,7 +35,7 @@ This API was built to be consumed by the App "continhas" (). Its function is to 
 * `GET` : Get transactions by period
 * `DELETE` : Delete transactions by period
 
-## Todo
+## To Do
 
 - [x] Transactions CRUD.
 - [x] Basic Swagger.
