@@ -38,7 +38,7 @@ This API was built to be consumed by the App "continhas" (). Its function is to 
 ## Todo
 
 - [x] Transactions CRUD.
-- [ ] Basic Swagger.
+- [x] Basic Swagger.
 - [ ] Support Authentication with user for securing the APIs.
 - [ ] Write integration tests for Dashboard endpoints.
 - [ ] Deploy at jenkins 
