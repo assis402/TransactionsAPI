@@ -57,25 +57,28 @@ if (app.Environment.IsProduction())
 {
 }
 
-app.UseSwagger(c =>
+app.UseSwagger(options =>
 {
-    c.PreSerializeFilters.Add((swaggerDoc, request) =>
+    //Workaround to use the Swagger UI "Try Out" functionality when deployed behind a reverse proxy (APIM) with API prefix /sub context configured
+    options.PreSerializeFilters.Add((swagger, httpReq) =>
     {
-        const string prefixHeader = "X-Forwarded-Prefix";
-        if (!request.Headers.ContainsKey(prefixHeader))
-            return;
+        if (httpReq.Headers.ContainsKey("X-Forwarded-Host"))
+        {
+            //The httpReq.PathBase and httpReq.Headers["X-Forwarded-Prefix"] is what we need to get the base path.
+            //For some reason, they returning as null/blank. Perhaps this has something to do with how the proxy is configured which we don't have control.
+            //For the time being, the base path is manually set here that corresponds to the APIM API Url Prefix.
+            //In this case we set it to 'sample-app'. 
 
-        var serverUrl = request.Headers[prefixHeader];
-        swaggerDoc.Servers = new List<OpenApiServer>()
-            {
-                new() { Description = "Server behind traefik", Url = serverUrl }
-            };
+            var basePath = "matheus/transactions-api";
+            var serverUrl = $"{httpReq.Scheme}://{httpReq.Headers["X-Forwarded-Host"]}/{basePath}";
+            swagger.Servers = new List<OpenApiServer> { new OpenApiServer { Url = serverUrl } };
+        }
     });
-});
-app.UseSwaggerUI(options =>
+})
+.UseSwaggerUI(options =>
 {
-    options.RoutePrefix = "swagger";
-    options.SwaggerEndpoint("v1/swagger.json", "My API V1");
+    options.RoutePrefix = string.Empty;
+    options.SwaggerEndpoint("swagger/v1/swagger.json", "My Api (v1)");
 });
 
 app.UseHttpsRedirection();
