@@ -52,6 +52,11 @@ var app = builder.Build();
 //    app.UseSwaggerUI();
 //}
 
+if (app.Environment.IsProduction())
+{
+    app.UsePathBase("/matheus/transactions-api");
+}
+
 app.UseForwardedHeaders();
 app.UseSwagger();
 app.UseSwaggerUI();
