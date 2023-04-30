@@ -64,7 +64,7 @@ app.UseSwagger(options =>
     //Workaround to use the Swagger UI "Try Out" functionality when deployed behind a reverse proxy (APIM) with API prefix /sub context configured
     options.PreSerializeFilters.Add((swagger, httpReq) =>
     {
-        var basePath = "matheus/transactions";
+        var basePath = "matheus/transactions-api";
         var serverUrl = $"{httpReq.Scheme}://{httpReq.Headers["Host"]}/{basePath}";
         swagger.Servers = new List<OpenApiServer> { new OpenApiServer { Url = serverUrl } };
     });
