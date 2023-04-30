@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.OpenApi.Models;
 using MiniValidation;
 using MongoDB.Driver;
@@ -47,32 +46,33 @@ var app = builder.Build();
 
 #region Configure Pipeline
 
-//if (app.Environment.IsDevelopment())
-//{
-//    app.UseSwagger();
-//    app.UseSwaggerUI();
-//}
-
 if (app.Environment.IsProduction())
 {
+    app.UseForwardedHeaders();
+    app.UseSwagger(options =>
+    {
+        options.PreSerializeFilters.Add((swagger, httpReq) =>
+        {
+            if (httpReq.Headers.ContainsKey("Host"))
+            {
+                var basePath = "matheus/transactions-api";
+                var serverUrl = $"{httpReq.Scheme}://{httpReq.Headers["Host"]}/{basePath}";
+                swagger.Servers = new List<OpenApiServer> { new OpenApiServer { Url = serverUrl } };
+            }
+        });
+    })
+    .UseSwaggerUI(options =>
+    {
+        options.RoutePrefix = "swagger";
+        options.SwaggerEndpoint("v1/swagger.json", "Transactions API (v1)");
+    });
+}
+else 
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
-app.UseForwardedHeaders();
-
-app.UseSwagger(options =>
-{
-    options.PreSerializeFilters.Add((swagger, httpReq) =>
-    {
-        var basePath = "matheus/transactions-api";
-        var serverUrl = $"{httpReq.Scheme}://{httpReq.Headers["Host"]}/{basePath}";
-        swagger.Servers = new List<OpenApiServer> { new OpenApiServer { Url = serverUrl } };
-    });
-})
-.UseSwaggerUI(options =>
-{
-    options.RoutePrefix = "swagger";
-    options.SwaggerEndpoint("v1/swagger.json", "My Api (v1)");
-});
 
 app.UseHttpsRedirection();
 
