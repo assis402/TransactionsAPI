@@ -71,7 +71,7 @@ app.UseSwagger(options =>
 .UseSwaggerUI(options =>
 {
     options.RoutePrefix = "swagger";
-    options.SwaggerEndpoint("/v1/swagger.json", "My Api (v1)");
+    options.SwaggerEndpoint("v1/swagger.json", "My Api (v1)");
 });
 
 app.UseHttpsRedirection();
