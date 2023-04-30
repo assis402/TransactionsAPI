@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.OpenApi.Models;
 using MiniValidation;
 using MongoDB.Driver;
@@ -54,12 +55,28 @@ var app = builder.Build();
 
 if (app.Environment.IsProduction())
 {
-    app.UsePathBase("/matheus/transactions-api");
 }
 
-app.UseForwardedHeaders();
-app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwagger(c =>
+{
+    c.PreSerializeFilters.Add((swaggerDoc, request) =>
+    {
+        const string prefixHeader = "X-Forwarded-Prefix";
+        if (!request.Headers.ContainsKey(prefixHeader))
+            return;
+
+        var serverUrl = request.Headers[prefixHeader];
+        swaggerDoc.Servers = new List<OpenApiServer>()
+            {
+                new() { Description = "Server behind traefik", Url = serverUrl }
+            };
+    });
+});
+app.UseSwaggerUI(options =>
+{
+    options.RoutePrefix = "swagger";
+    options.SwaggerEndpoint("v1/swagger.json", "My API V1");
+});
 
 app.UseHttpsRedirection();
 
