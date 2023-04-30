@@ -45,8 +45,16 @@ var app = builder.Build();
 //    app.UseSwagger();
 //    app.UseSwaggerUI();
 //}
-app.UseSwagger();
-app.UseSwaggerUI();
+
+//if (app.Environment.IsProduction())
+//{
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("v1/swagger.json", "MY REST API V1");
+    });
+
+//}
 
 app.UseHttpsRedirection();
 
