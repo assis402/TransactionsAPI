@@ -28,11 +28,13 @@ This API was built to be consumed by the App "continhas" (https://github.com/ass
 * `POST` : Create a new transaction
 * `PUT` : Update a transaction
 
-#### /transaction/:id
+#### /transaction/{period}
+* `GET` : Get transactions by period
+
+#### /transaction/{id}
 * `DELETE` : Delete a transaction by id
 
-#### /transaction/:period
-* `GET` : Get transactions by period
+#### /transaction/byperiod/{period}
 * `DELETE` : Delete transactions by period
 
 ## To Do
