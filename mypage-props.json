@@ -4,6 +4,6 @@
 		"EN_US": "Minimal API with C# .NET 7 and Data Persistence in MongoDB"
 	},
 	"videoUrl": "https://www.youtube.com/embed/IftESdlq3Qw",
-	"swaggerUrl": "link",
+	"swaggerUrl": "https://c4devs.cloud/matheus/transactions-api/swagger",
 	"tags": ["Backend", ".NET 7", "Minimal API", "MongoDB"],
 }
