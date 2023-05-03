@@ -1,4 +1,4 @@
-# TransactionsAPI  ![status](https://img.shields.io/static/v1?label=status&message=in%20progress&color=yellow)
+# TransactionsAPI ![status](https://img.shields.io/static/v1?label=status&message=in%20progress&color=yellow)
 Minimal API with C# .NET 7 and Data Persistence in MongoDB. 
 
 This API was built to be consumed by the App "continhas" (https://github.com/assis402/continhas). Its function is to perform inclusion, update, deletion and queries of financial inputs and outputs executed in the App.
