@@ -1,7 +1,7 @@
 {
 	"descriptionDictonary": {
-		"PT_BR": "Minimal API em C# .NET 7 com persistência de dados em MongoDB",
-		"EN_US": "Minimal API with C# .NET 7 and Data Persistence in MongoDB"
+		"PT_BR": "Minimal API em C# .NET 7 e MongoDB para aplicação de controle de finanças pessoais",
+		"EN_US": "Minimal API with C# .NET 7 and MongoDB for personal finance control application"
 	},
 	"videoUrl": "https://www.youtube.com/embed/IftESdlq3Qw",
 	"swaggerUrl": "https://c4devs.cloud/matheus/transactions-api/swagger",
