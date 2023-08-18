@@ -51,7 +51,7 @@ public class TransactionsApplication : WebApplicationFactory<Program>, IDisposab
 
     public async Task<TResponse> Get<TResponse>(string? period)
     {
-        var result = await _httpClient.GetAsync($"{_httpClient.BaseAddress}?period={period}");
+        var result = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/{period}");
         var responseString = await result.Content.ReadAsStringAsync();
         return JsonConvert.DeserializeObject<TResponse>(responseString);
     }
@@ -75,14 +75,14 @@ public class TransactionsApplication : WebApplicationFactory<Program>, IDisposab
 
     public async Task<TResponse> Delete<TResponse>(string? id)
     {
-        var result = await _httpClient.DeleteAsync($"{_httpClient.BaseAddress}?id={id}");
+        var result = await _httpClient.DeleteAsync($"{_httpClient.BaseAddress}/{id}");
         var responseString = await result.Content.ReadAsStringAsync();
         return JsonConvert.DeserializeObject<TResponse>(responseString);
     }
 
     public async Task<TResponse> DeleteByPeriod<TResponse>(string? period)
     {
-        var result = await _httpClient.DeleteAsync($"{_httpClient.BaseAddress}/delete?period={period}");
+        var result = await _httpClient.DeleteAsync($"{_httpClient.BaseAddress}/byperiod/{period}");
         var responseString = await result.Content.ReadAsStringAsync();
         return JsonConvert.DeserializeObject<TResponse>(responseString);
     }

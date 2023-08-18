@@ -109,15 +109,12 @@ static void MapTransactionActions(WebApplication app)
         .WithName("CreateTransaction")
         .WithTags("Transaction");
 
-    app.MapGet("/transaction", async
+    app.MapGet("/transaction/{period}", async
         (TransactionsContextDb database,
          string? period) =>
         {
             try
             {
-                if (string.IsNullOrEmpty(period))
-                    return ErrorResult("The \"Period\" parameter is required.");
-
                 var filter = GetByPeriodFilterDefinition(period);
                 var result = await (await database.Transactions.FindAsync(filter)).ToListAsync();
 
@@ -175,15 +172,12 @@ static void MapTransactionActions(WebApplication app)
         .WithName("UpdateTransaction")
         .WithTags("Transaction");
 
-    app.MapDelete("/transaction", async
+    app.MapDelete("/transaction/{id}", async
         (TransactionsContextDb database,
          string? id) =>
         {
             try
             {
-                if (string.IsNullOrEmpty(id))
-                    return ErrorResult("The \"Id\" parameter is required.");
-
                 var filter = GetByIdFilterDefinition(id!);
                 var result = await database.Transactions.DeleteOneAsync(filter);
 
@@ -203,15 +197,12 @@ static void MapTransactionActions(WebApplication app)
         .WithName("DeleteTransaction")
         .WithTags("Transaction");
 
-    app.MapDelete("/transaction/delete", async
+    app.MapDelete("/transaction/byperiod/{period}", async
         (TransactionsContextDb database,
          string? period) =>
         {
             try
             {
-                if (string.IsNullOrEmpty(period))
-                    return ErrorResult("The \"Period\" parameter is required.");
-
                 var filter = GetByPeriodFilterDefinition(period);
                 await database.Transactions.DeleteManyAsync(filter);
 

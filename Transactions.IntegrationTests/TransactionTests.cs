@@ -121,28 +121,12 @@ public class TransactionTests : IClassFixture<TransactionsApplication>
         Assert.Equal(427.88M, result.Data.Sum.Total);
     }
 
-    [Fact(DisplayName = "(6) Transaction: Validation errors in get")]
-    public async Task UT6_GetValidationError()
-    {
-        //Arrange
-        string? period = null;
-
-        //Act
-        var result = await _application.Get<ApiResult<DashboardResponseDto>>(period);
-
-        //Assert
-        Assert.False(result.Success);
-        Assert.NotNull(result.Title);
-        Assert.Equal("The \"Period\" parameter is required.", result.Title);
-        Assert.Equal((int)BadRequest, result.StatusCode);
-    }
-
     #endregion Get
 
     #region Delete
 
-    [Fact(DisplayName = "(7) Transaction: Success in delete")]
-    public async Task UT7_DeleteSuccess()
+    [Fact(DisplayName = "(6) Transaction: Success in delete")]
+    public async Task UT6_DeleteSuccess()
     {
         //Arrange
         var transactionId = Environment.GetEnvironmentVariable("TEST_TRANSACTION_ID");
@@ -157,24 +141,8 @@ public class TransactionTests : IClassFixture<TransactionsApplication>
         Assert.Equal((int)OK, result.StatusCode);
     }
 
-    [Fact(DisplayName = "(8) Transaction: Validation errors in delete")]
-    public async Task UT8_DeleteValidationError()
-    {
-        //Arrange
-        var transactionId = "";
-
-        //Act
-        var result = await _application.Delete<ApiResult<string>>(transactionId);
-
-        //Assert
-        Assert.False(result.Success);
-        Assert.NotNull(result.Title);
-        Assert.Equal("The \"Id\" parameter is required.", result.Title);
-        Assert.Equal((int)BadRequest, result.StatusCode);
-    }
-
-    [Fact(DisplayName = "(9) Transaction: Success in delete by period")]
-    public async Task UT9_DeleteByPeriodSuccess()
+    [Fact(DisplayName = "(7) Transaction: Success in delete by period")]
+    public async Task UT7_DeleteByPeriodSuccess()
     {
         //Arrange
         var request = GenerateCreateRequest(new DateTime(2025, 02, 01));
