@@ -28,8 +28,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Transactions.API\Transactions.API.csproj" />
-  </ItemGroup>
-
 </Project>
