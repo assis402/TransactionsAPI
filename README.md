@@ -1,4 +1,4 @@
-# TransactionsAPI
+# TransactionsAPI  ![status](https://img.shields.io/static/v1?label=status&message=in%20progress&color=yellow)
 Minimal API with C# .NET 7 and Data Persistence in MongoDB. 
 
 This API was built to be consumed by the App "continhas" (https://github.com/assis402/continhas). Its function is to perform inclusion, update, deletion and queries of financial inputs and outputs executed in the App.
@@ -28,12 +28,17 @@ This API was built to be consumed by the App "continhas" (https://github.com/ass
 * `POST` : Create a new transaction
 * `PUT` : Update a transaction
 
-#### /transaction/:id
+#### /transaction/{period}
+* `GET` : Get transactions by period
+
+#### /transaction/{id}
 * `DELETE` : Delete a transaction by id
 
-#### /transaction/:period
-* `GET` : Get transactions by period
+#### /transaction/byperiod/{period}
 * `DELETE` : Delete transactions by period
+
+## Swagger
+Link: https://c4devs.cloud/matheus/transactions-api/swagger
 
 ## To Do
 
