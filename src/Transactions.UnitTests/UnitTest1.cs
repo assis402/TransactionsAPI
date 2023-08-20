@@ -5,7 +5,6 @@ namespace Transactions.UnitTests
         [Fact]
         public void Test1()
         {
-
         }
     }
 }
